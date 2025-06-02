@@ -449,8 +449,8 @@ async def initialize_session(mcp_config=None):
             # Load settings from config.json file
             mcp_config = load_config_from_json()
         client = MultiServerMCPClient(mcp_config)
-        await client.__aenter__()
-        tools = client.get_tools()
+        # await client.__aenter__()
+        tools = await client.get_tools()
         st.session_state.tool_count = len(tools)
         st.session_state.mcp_client = client
 
@@ -504,7 +504,8 @@ with st.sidebar:
         )
 
     # Check OpenAI API key
-    has_openai_key = os.environ.get("OPENAI_API_KEY") is not None
+    # has_openai_key = os.environ.get("OPENAI_API_KEY") is not None
+    has_openai_key = st.secrets['OPENAI_API_KEY'] is not None
     if has_openai_key:
         available_models.extend(["gpt-4o", "gpt-4o-mini"])
 
